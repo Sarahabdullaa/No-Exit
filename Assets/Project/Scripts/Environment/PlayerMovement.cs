@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public float speed = 5f;
-    public float mouseSensitivity = 20f; // Adjusted for better control
+    public float mouseSensitivity = 150f;
     public Transform playerCamera;
 
     float xRotation = 0f;
@@ -13,9 +13,12 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
-        // This forces the game to run at 60 FPS in the build
-        // This usually removes horizontal lines instantly
+        // Enable VSync (prevents horizontal screen tearing)
+        QualitySettings.vSyncCount = 1;
+
+        // Optional: set target FPS (can use 60 or 120)
         Application.targetFrameRate = 60;
     }
 
@@ -24,8 +27,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Keyboard.current != null)
         {
-            float x = (Keyboard.current.dKey.isPressed ? 1 : 0) - (Keyboard.current.aKey.isPressed ? 1 : 0);
-            float z = (Keyboard.current.wKey.isPressed ? 1 : 0) - (Keyboard.current.sKey.isPressed ? 1 : 0);
+            float x = 0f;
+            float z = 0f;
+
+            if (Keyboard.current.dKey.isPressed) x += 1f;
+            if (Keyboard.current.aKey.isPressed) x -= 1f;
+            if (Keyboard.current.wKey.isPressed) z += 1f;
+            if (Keyboard.current.sKey.isPressed) z -= 1f;
 
             Vector3 move = transform.right * x + transform.forward * z;
             controller.Move(move * speed * Time.deltaTime);
@@ -40,9 +48,8 @@ public class PlayerMovement : MonoBehaviour
             // Get the raw movement
             Vector2 delta = Mouse.current.delta.ReadValue();
 
-            // Apply sensitivity and a small smoothing factor
-            float mouseX = delta.x * mouseSensitivity * 0.05f;
-            float mouseY = delta.y * mouseSensitivity * 0.05f;
+            float mouseX = delta.x * mouseSensitivity * Time.deltaTime;
+            float mouseY = delta.y * mouseSensitivity * Time.deltaTime;
 
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, -90f, 90f);
