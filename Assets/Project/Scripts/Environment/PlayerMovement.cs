@@ -1,62 +1,69 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // This is the key change!
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public float speed = 5f;
-    public float mouseSensitivity = 150f;
-    public Transform playerCamera;
 
-    float xRotation = 0f;
+    [Header("Camera Settings")]
+    public Transform playerCamera;
+    public float mouseSensitivity = 0.1f; // Start very low (0.1 to 0.5)
+    public float smoothing = 10f; // How "smooth" the camera feels
+
+    private float xRotation = 0f;
+    private Vector2 currentMouseDelta;
+    private Vector2 appliedMouseDelta;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // Enable VSync (prevents horizontal screen tearing)
+        // Helps sync frames for a smoother look
         QualitySettings.vSyncCount = 1;
-
-        // Optional: set target FPS (can use 60 or 120)
         Application.targetFrameRate = 60;
     }
 
-    // Movement stays here
     void Update()
     {
-        if (Keyboard.current != null)
-        {
-            float x = 0f;
-            float z = 0f;
-
-            if (Keyboard.current.dKey.isPressed) x += 1f;
-            if (Keyboard.current.aKey.isPressed) x -= 1f;
-            if (Keyboard.current.wKey.isPressed) z += 1f;
-            if (Keyboard.current.sKey.isPressed) z -= 1f;
-
-            Vector3 move = transform.right * x + transform.forward * z;
-            controller.Move(move * speed * Time.deltaTime);
-        }
+        HandleMovement();
     }
 
-    // Camera rotation moves here to fix the "cutting/lag"
     void LateUpdate()
     {
-        if (Mouse.current != null)
-        {
-            // Get the raw movement
-            Vector2 delta = Mouse.current.delta.ReadValue();
+        HandleRotation();
+    }
 
-            float mouseX = delta.x * mouseSensitivity * Time.deltaTime;
-            float mouseY = delta.y * mouseSensitivity * Time.deltaTime;
+    void HandleMovement()
+    {
+        if (Keyboard.current == null) return;
 
-            xRotation -= mouseY;
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        float x = (Keyboard.current.dKey.isPressed ? 1f : 0f) - (Keyboard.current.aKey.isPressed ? 1f : 0f);
+        float z = (Keyboard.current.wKey.isPressed ? 1f : 0f) - (Keyboard.current.sKey.isPressed ? 1f : 0f);
 
-            // Use 'localRotation' to ensure it doesn't fight with the parent
-            playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            transform.Rotate(Vector3.up * mouseX);
-        }
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * speed * Time.deltaTime);
+    }
+
+    void HandleRotation()
+    {
+        if (Mouse.current == null) return;
+
+        // 1. Get raw delta
+        Vector2 targetMouseDelta = Mouse.current.delta.ReadValue();
+
+        // 2. Smooth the delta (This removes the "jitter")
+        currentMouseDelta = Vector2.Lerp(currentMouseDelta, targetMouseDelta, Time.deltaTime * smoothing);
+
+        float mouseX = currentMouseDelta.x * mouseSensitivity;
+        float mouseY = currentMouseDelta.y * mouseSensitivity;
+
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        // 3. Apply rotation
+        playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
     }
 }

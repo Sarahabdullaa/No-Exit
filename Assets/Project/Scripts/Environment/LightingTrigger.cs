@@ -4,61 +4,73 @@ using System.Collections.Generic;
 
 public class LightingTrigger : MonoBehaviour
 {
-    public GameObject LIT_01_Childhood;
-    public GameObject LIT_02_Tension;
-    public float fadeDuration = 2.0f; // How many seconds the change takes
+    public GameObject lightsToFadeOut;
+    public GameObject lightsToFadeIn;
+    public float fadeDuration = 0.1f;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(FadeLighting());
-            // Disable collider so it doesn't trigger twice
+            // Play the "Pop" sound
+            AudioSource triggerSound = GetComponent<AudioSource>();
+            if (triggerSound != null)
+            {
+                triggerSound.spatialBlend = 0f; // Force 2D for loudness
+                triggerSound.Play();
+            }
+
+            if (lightsToFadeIn != null && lightsToFadeOut != null)
+            {
+                StartCoroutine(FadeLighting());
+            }
+
+            // Disable trigger so it only happens once
             GetComponent<Collider>().enabled = false;
         }
     }
 
     IEnumerator FadeLighting()
     {
-        // 1. Get all lights from both folders
-        Light[] lights01 = LIT_01_Childhood.GetComponentsInChildren<Light>();
-        Light[] lights02 = LIT_02_Tension.GetComponentsInChildren<Light>();
-
-        // 2. Turn LIT_02 ON but set its intensity to 0 first
-        LIT_02_Tension.SetActive(true);
-        Dictionary<Light, float> originalIntensities01 = new Dictionary<Light, float>();
-        Dictionary<Light, float> targetIntensities02 = new Dictionary<Light, float>();
-
-        foreach (Light l in lights01) originalIntensities01[l] = l.intensity;
-        foreach (Light l in lights02)
+        // INSTANT CUT: If duration is near 0, just swap them immediately
+        if (fadeDuration <= 0.05f)
         {
-            targetIntensities02[l] = l.intensity;
+            lightsToFadeIn.SetActive(true);
+            lightsToFadeOut.SetActive(false);
+            yield break;
+        }
+
+        // SMOOTH FADE: Used for earlier rooms (1, 2, 3)
+        Light[] lightsOff = lightsToFadeOut.GetComponentsInChildren<Light>();
+        Light[] lightsOn = lightsToFadeIn.GetComponentsInChildren<Light>();
+
+        lightsToFadeIn.SetActive(true);
+
+        Dictionary<Light, float> originalIntensitiesOff = new Dictionary<Light, float>();
+        Dictionary<Light, float> targetIntensitiesOn = new Dictionary<Light, float>();
+
+        foreach (Light l in lightsOff) originalIntensitiesOff[l] = l.intensity;
+        foreach (Light l in lightsOn)
+        {
+            targetIntensitiesOn[l] = l.intensity;
             l.intensity = 0;
         }
 
-        // 3. Fade over time
         float elapsed = 0;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / fadeDuration;
 
-            // Fade OUT folder 1
-            foreach (Light l in lights01)
-            {
-                if (l != null) l.intensity = Mathf.Lerp(originalIntensities01[l], 0, t);
-            }
+            foreach (Light l in lightsOff)
+                if (l != null) l.intensity = Mathf.Lerp(originalIntensitiesOff[l], 0, t);
 
-            // Fade IN folder 2
-            foreach (Light l in lights02)
-            {
-                if (l != null) l.intensity = Mathf.Lerp(0, targetIntensities02[l], t);
-            }
+            foreach (Light l in lightsOn)
+                if (l != null) l.intensity = Mathf.Lerp(0, targetIntensitiesOn[l], t);
 
             yield return null;
         }
 
-        // 4. Finally shut off folder 1
-        LIT_01_Childhood.SetActive(false);
+        lightsToFadeOut.SetActive(false);
     }
 }
