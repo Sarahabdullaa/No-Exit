@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class LightingTrigger : MonoBehaviour
 {
-    public GameObject lightsToFadeOut;
+    // CHANGE: Use an Array [] so you can drop Room 1 AND the Hallway lights here
+    public GameObject[] lightGroupsToFadeOut;
     public GameObject lightsToFadeIn;
     public float fadeDuration = 0.1f;
 
@@ -12,65 +13,79 @@ public class LightingTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Play the "Pop" sound
             AudioSource triggerSound = GetComponent<AudioSource>();
             if (triggerSound != null)
             {
-                triggerSound.spatialBlend = 0f; // Force 2D for loudness
+                triggerSound.spatialBlend = 0f;
                 triggerSound.Play();
             }
 
-            if (lightsToFadeIn != null && lightsToFadeOut != null)
+            // Check if we have lights to work with
+            if (lightsToFadeIn != null && lightGroupsToFadeOut.Length > 0)
             {
                 StartCoroutine(FadeLighting());
             }
 
-            // Disable trigger so it only happens once
             GetComponent<Collider>().enabled = false;
         }
     }
 
     IEnumerator FadeLighting()
     {
-        // INSTANT CUT: If duration is near 0, just swap them immediately
-        if (fadeDuration <= 0.05f)
+        // 1. COLLECT ALL LIGHTS from all groups in the array
+        List<Light> allLightsOff = new List<Light>();
+        Dictionary<Light, float> originalIntensitiesOff = new Dictionary<Light, float>();
+
+        foreach (GameObject group in lightGroupsToFadeOut)
         {
-            lightsToFadeIn.SetActive(true);
-            lightsToFadeOut.SetActive(false);
-            yield break;
+            if (group != null)
+            {
+                Light[] lightsInGroup = group.GetComponentsInChildren<Light>();
+                foreach (Light l in lightsInGroup)
+                {
+                    allLightsOff.Add(l);
+                    originalIntensitiesOff[l] = l.intensity;
+                }
+            }
         }
 
-        // SMOOTH FADE: Used for earlier rooms (1, 2, 3)
-        Light[] lightsOff = lightsToFadeOut.GetComponentsInChildren<Light>();
-        Light[] lightsOn = lightsToFadeIn.GetComponentsInChildren<Light>();
-
+        // 2. SETUP LIGHTS TO FADE IN
         lightsToFadeIn.SetActive(true);
-
-        Dictionary<Light, float> originalIntensitiesOff = new Dictionary<Light, float>();
+        Light[] lightsOn = lightsToFadeIn.GetComponentsInChildren<Light>();
         Dictionary<Light, float> targetIntensitiesOn = new Dictionary<Light, float>();
 
-        foreach (Light l in lightsOff) originalIntensitiesOff[l] = l.intensity;
         foreach (Light l in lightsOn)
         {
             targetIntensitiesOn[l] = l.intensity;
             l.intensity = 0;
         }
 
+        // 3. THE FADE LOOP
         float elapsed = 0;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / fadeDuration;
 
-            foreach (Light l in lightsOff)
+            // Fade everyone in the 'Off' list
+            foreach (Light l in allLightsOff)
+            {
                 if (l != null) l.intensity = Mathf.Lerp(originalIntensitiesOff[l], 0, t);
+            }
 
+            // Fade everyone in the 'On' list
             foreach (Light l in lightsOn)
+            {
                 if (l != null) l.intensity = Mathf.Lerp(0, targetIntensitiesOn[l], t);
+            }
 
             yield return null;
         }
 
-        lightsToFadeOut.SetActive(false);
+        // 4. CLEAN UP
+        foreach (GameObject group in lightGroupsToFadeOut)
+        {
+            if (group != null) group.SetActive(false);
+        }
     }
 }
