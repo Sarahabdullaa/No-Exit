@@ -34,6 +34,17 @@ public class PlayerInteract : MonoBehaviour
                         chest.OpenChest();
                     }
                 }
+
+                if (hit.collider.CompareTag("Drawer"))
+                {
+                    // Use InParent because the collider is on the child mesh!
+                    DrawerOpen drawer = hit.collider.GetComponentInParent<DrawerOpen>();
+
+                    if (drawer != null)
+                    {
+                        drawer.ToggleDrawer();
+                    }
+                }
             }
         }
     }
