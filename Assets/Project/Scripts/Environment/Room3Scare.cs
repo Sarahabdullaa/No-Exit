@@ -3,31 +3,23 @@ using System.Collections;
 
 public class Room3Scare : MonoBehaviour
 {
-    public AudioSource doorBang;       // Drag the Bang sound here
-    public AudioSource parentYelling;  // Drag the Muffled Yelling here (with Low Pass Filter)
+    public AudioSource arguingAudio;
+    public AudioSource bangDoorAudio;
 
     private bool hasPlayed = false;
 
     void OnTriggerEnter(Collider other)
     {
-        // Only trigger for the player and only once
-        if (!hasPlayed && other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !hasPlayed)
         {
+            if (arguingAudio != null)
+                arguingAudio.Play();
+
+            if (bangDoorAudio != null)
+                bangDoorAudio.Play();
+
             hasPlayed = true;
-            StartCoroutine(PlayScareSequence());
         }
     }
 
-    IEnumerator PlayScareSequence()
-    {
-        // 1. Immediate Loud Bang
-        doorBang.Play();
-
-        // 2. Short pause for the shock to sink in (0.5 seconds)
-        yield return new WaitForSeconds(0.5f);
-
-        // 3. The muffled shouting starts and loops
-        parentYelling.Play();
-        
-    }
 }
