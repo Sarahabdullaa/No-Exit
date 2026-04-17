@@ -62919,6 +62919,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 859208617}
+    - target: {fileID: 8241157979723498663, guid: f5d9062bef5b6ca4cb5e17dd5176c1c4, type: 3}
+      propertyPath: m_AdditionalLightsShadowResolutionTier
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8873086990051944069, guid: f5d9062bef5b6ca4cb5e17dd5176c1c4, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -63801,6 +63805,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 2553
       objectReference: {fileID: 0}
+    - target: {fileID: 902007122446098421, guid: 5f1343401e29e5644b7befd6d92fecbb, type: 3}
+      propertyPath: m_AdditionalLightsShadowResolutionTier
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 962931610679558765, guid: 5f1343401e29e5644b7befd6d92fecbb, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -63981,6 +63989,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2126951138}
+    - target: {fileID: 1898052790796100009, guid: 5f1343401e29e5644b7befd6d92fecbb, type: 3}
+      propertyPath: m_AdditionalLightsShadowResolutionTier
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1904414342175759505, guid: 5f1343401e29e5644b7befd6d92fecbb, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -67291,6 +67303,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 573661695}
+    - target: {fileID: 6025254987177738269, guid: 60280ecfb831c1c4ea386ee608e115fb, type: 3}
+      propertyPath: m_AdditionalLightsShadowResolutionTier
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6034877080602417758, guid: 60280ecfb831c1c4ea386ee608e115fb, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -67675,6 +67691,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1541686434}
+    - target: {fileID: 8780355956890940835, guid: 60280ecfb831c1c4ea386ee608e115fb, type: 3}
+      propertyPath: m_Shadows.m_Resolution
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 8790939170005146145, guid: 60280ecfb831c1c4ea386ee608e115fb, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -68888,6 +68908,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1203511572}
+    - target: {fileID: 7382154371741130269, guid: 3b813c99ec9838b44a101a7c0ca6483a, type: 3}
+      propertyPath: m_AdditionalLightsShadowResolutionTier
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7390881137163306249, guid: 3b813c99ec9838b44a101a7c0ca6483a, type: 3}
       propertyPath: m_Mesh
       value: 
