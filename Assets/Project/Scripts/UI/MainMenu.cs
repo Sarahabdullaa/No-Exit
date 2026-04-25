@@ -7,8 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenuUI;
     public GameObject optionsPanel;
-    //public GameObject creditsPanel;
-    public AudioMixer mixer;
+    public GameObject creditsPanel;
 
     // QUALITY
     public TextMeshProUGUI qualityText;
@@ -20,7 +19,7 @@ public class MainMenu : MonoBehaviour
     // START GAME
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("LoadingScene");
     }
 
     // OPEN OPTIONS
@@ -34,7 +33,7 @@ public class MainMenu : MonoBehaviour
     public void OpenCredits()
     {
         mainMenuUI.SetActive(false);
-        //creditsPanel.SetActive(true);
+        creditsPanel.SetActive(true);
     }
 
     // BACK TO MAIN MENU
@@ -42,7 +41,7 @@ public class MainMenu : MonoBehaviour
     {
         mainMenuUI.SetActive(true);
         optionsPanel.SetActive(false);
-        //creditsPanel.SetActive(false);
+        creditsPanel.SetActive(false);
     }
 
     // QUIT GAME
@@ -88,18 +87,7 @@ public class MainMenu : MonoBehaviour
         UpdateQualityUI();
     }
 
-    public void SetMusicVolume(float value)
-    {
-        float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
-        mixer.SetFloat("MusicVolume", volume);
-    }
-
-    public void SetSFXVolume(float value)
-    {
-        float volume = Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20;
-        mixer.SetFloat("SFXVolume", volume);
-    }
-
+  
 
     // GRAPHICS SETTINGS
     // QUALITY

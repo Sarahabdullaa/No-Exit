@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Project/Scenes/MainMenu.unity
     guid: 801477abc05b7c44999cafb90639e9be
   - enabled: 1
+    path: Assets/Project/Scenes/LoadingScene.unity
+    guid: 05927c93f61016a418af913d092d4d3a
+  - enabled: 1
     path: Assets/Project/Scenes/Hallway_Hub.unity
     guid: dbb27d48b8394df4aa5a8cce61178559
   m_configObjects:
