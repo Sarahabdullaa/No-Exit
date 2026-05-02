@@ -3,7 +3,7 @@
 namespace DoorScript
 {
     [RequireComponent(typeof(AudioSource))]
-    public class Door : MonoBehaviour
+    public class Door : MonoBehaviour, IInteractable
     {
         public bool open;
         public float smooth = 1.0f;
@@ -41,6 +41,11 @@ namespace DoorScript
 
             Quaternion targetRotation = Quaternion.Euler(0, targetY, 0);
             transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, Time.deltaTime * 5 * smooth);
+        }
+
+        public void Interact()
+        {
+            OpenDoor();
         }
 
         public void OpenDoor()
