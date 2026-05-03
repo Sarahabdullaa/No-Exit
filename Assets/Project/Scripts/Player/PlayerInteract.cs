@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    public float interactDistance = 3f; // Reach distance
+    public float interactDistance = 5f; // Reach distance
     public LayerMask interactableLayer; // What can we hit?
     public Transform cameraTransform;
 
