@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI;
     public GameObject settingsPanel;
     public GameObject crosshair;
+    public AudioMixer mixer;
 
     private bool isPaused = false;
     void Start()
@@ -66,5 +69,14 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
+    }
+    public void SetMusicVolume(float value)
+    {
+        mixer.SetFloat("MusicVolume", Mathf.Lerp(-80f, 0f, value));
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        mixer.SetFloat("SFXVolume", Mathf.Lerp(-80f, 0f, value));
     }
 }
