@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 using TMPro;
 
 public class MainMenu : MonoBehaviour
@@ -9,12 +10,34 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsPanel;
     public GameObject creditsPanel;
 
+    public AudioMixer mixer;
+
     // QUALITY
     public TextMeshProUGUI qualityText;
-    int qualityIndex;
+    private int currentQuality = 0;
 
     // BRIGHTNESS
     public CanvasGroup brightnessOverlay;
+
+    // FULLSCREEN
+    public Toggle fullscreenToggle;
+
+    // TAB SWITCHING
+    public GameObject audioPanel;
+    public GameObject graphicsPanel;
+    public GameObject controlsPanel;
+
+
+    void Start()
+    {
+        ShowAudio(); // default tab
+
+        // Set current quality text at start
+        qualityText.text = QualitySettings.names[currentQuality];
+
+        // Sync fullscreen toggle
+        fullscreenToggle.isOn = Screen.fullScreen;
+    }
 
     // START GAME
     public void StartGame()
@@ -52,11 +75,6 @@ public class MainMenu : MonoBehaviour
     }
 
     // TAB SWITCHING
-
-    public GameObject audioPanel;
-    public GameObject graphicsPanel;
-    public GameObject controlsPanel;
-
     public void ShowAudio()
     {
         audioPanel.SetActive(true);
@@ -78,46 +96,44 @@ public class MainMenu : MonoBehaviour
         controlsPanel.SetActive(true);
     }
 
-    void Start()
+    // AUDIO SETTINGS
+    public void SetMusicVolume(float value)
     {
-        ShowAudio(); // default tab
-
-        // Set current quality at start
-        qualityIndex = QualitySettings.GetQualityLevel();
-        UpdateQualityUI();
+        float volume = Mathf.Lerp(-80f, 0f, value);
+        mixer.SetFloat("MusicVolume", volume);
     }
 
-  
+    public void SetSFXVolume(float value)
+    {
+        float volume = Mathf.Lerp(-80f, 0f, value);
+        mixer.SetFloat("SFXVolume", volume);
+    }
 
     // GRAPHICS SETTINGS
+
     // QUALITY
     public void IncreaseQuality()
     {
-        qualityIndex++;
-        if (qualityIndex >= QualitySettings.names.Length)
-            qualityIndex = QualitySettings.names.Length - 1;
+        currentQuality++;
 
-        ApplyQuality();
+        if (currentQuality >= QualitySettings.names.Length)
+            currentQuality = 0;
+
+        qualityText.text = QualitySettings.names[currentQuality];
+
+        Debug.Log(qualityText.text);
     }
 
     public void DecreaseQuality()
     {
-        qualityIndex--;
-        if (qualityIndex < 0)
-            qualityIndex = 0;
+        currentQuality--;
 
-        ApplyQuality();
-    }
+        if (currentQuality < 0)
+            currentQuality = QualitySettings.names.Length - 1;
 
-    void ApplyQuality()
-    {
-        QualitySettings.SetQualityLevel(qualityIndex);
-        UpdateQualityUI();
-    }
+        qualityText.text = QualitySettings.names[currentQuality];
 
-    void UpdateQualityUI()
-    {
-        qualityText.text = QualitySettings.names[qualityIndex];
+        Debug.Log(qualityText.text);
     }
 
     // BRIGHTNESS
@@ -125,7 +141,7 @@ public class MainMenu : MonoBehaviour
     {
         if (brightnessOverlay != null)
         {
-            brightnessOverlay.alpha = 1f - value;
+            brightnessOverlay.alpha = value;
         }
     }
 
@@ -133,5 +149,7 @@ public class MainMenu : MonoBehaviour
     public void ToggleFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+
+        Debug.Log("Fullscreen: " + isFullscreen);
     }
 }
