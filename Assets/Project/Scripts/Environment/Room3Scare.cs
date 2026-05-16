@@ -4,7 +4,6 @@ using System.Collections;
 public class Room3Scare : MonoBehaviour
 {
     public AudioSource arguingAudio;
-    public AudioSource bangDoorAudio;
 
     private bool hasPlayed = false;
 
@@ -14,9 +13,6 @@ public class Room3Scare : MonoBehaviour
         {
             if (arguingAudio != null)
                 arguingAudio.Play();
-
-            if (bangDoorAudio != null)
-                bangDoorAudio.Play();
 
             hasPlayed = true;
         }
