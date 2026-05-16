@@ -1,0 +1,54 @@
+{
+    "name": "PuzzleActions",
+    "maps": [
+        {
+            "name": "ConnectPuzzle",
+            "id": "fc49c4f6-e8f6-4a97-8dbb-8993c5ef5f5f",
+            "actions": [
+                {
+                    "name": "Press",
+                    "type": "Button",
+                    "id": "27356f46-985e-427e-abf4-53bf14f1b629",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ScreenPos",
+                    "type": "Value",
+                    "id": "9288831e-48e1-443a-8927-99fd50566798",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8b56c7fc-cac6-4996-8cf2-b9eddd8670cf",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97a9ca1a-7219-4948-8c2e-464f6c43057e",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScreenPos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LampPuzzleManager : MonoBehaviour
 {
+
+    public RewardRevealer rewardRevealer;   
     [Header("Correct Sequence")]
     public LampInteractable[] correctOrder;
 
@@ -130,5 +132,7 @@ public class LampPuzzleManager : MonoBehaviour
             audioSource.PlayOneShot(successSound);
         // Optionally disable further lamp interactions
         // foreach (var lamp in allLamps) lamp.enabled = false;
+           
+
     }
 }

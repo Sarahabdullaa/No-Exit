@@ -2,14 +2,19 @@ using UnityEngine;
 
 public class DrawerOpen : MonoBehaviour
 {
+    [Header("Movement")]
     public Vector3 openOffset = new Vector3(0, 0, 1.5f);
     public float speed = 5f;
 
+    [Header("Audio")]
     public AudioClip openSound;
     public AudioClip closeSound;
+    public AudioClip lockedSound;    // Optional: play when player tries to open locked drawer
+
+    [Header("Lock")]
+    public bool isLocked = true;     // Start locked
 
     private AudioSource audioSource;
-
     private Vector3 closedPos;
     private Vector3 openPos;
     private bool isOpen = false;
@@ -20,31 +25,44 @@ public class DrawerOpen : MonoBehaviour
         openPos = closedPos + openOffset;
 
         audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    public void UnlockDrawer()
+    {
+        isLocked = false;
+        Debug.Log("Drawer unlocked!");
+        // Optional: play a success sound or effect
     }
 
     public void ToggleDrawer()
     {
+        if (isLocked)
+        {
+            // Play locked sound if assigned
+            if (lockedSound != null)
+                audioSource.PlayOneShot(lockedSound);
+            else
+                Debug.Log("Drawer is locked!");
+            return;
+        }
+
         isOpen = !isOpen;
 
-        // Play sound
         if (isOpen)
         {
-            audioSource.PlayOneShot(openSound);
+            if (openSound != null) audioSource.PlayOneShot(openSound);
         }
         else
         {
-            audioSource.PlayOneShot(closeSound);
+            if (closeSound != null) audioSource.PlayOneShot(closeSound);
         }
     }
 
     void Update()
     {
         Vector3 target = isOpen ? openPos : closedPos;
-
-        transform.localPosition = Vector3.Lerp(
-            transform.localPosition,
-            target,
-            Time.deltaTime * speed
-        );
+        transform.localPosition = Vector3.Lerp(transform.localPosition, target, Time.deltaTime * speed);
     }
 }
