@@ -2,15 +2,17 @@
 
 public class ClockInteractable : MonoBehaviour, IInteractable
 {
-    [Header("Hand & Rotation")]
-    public Transform handTransform;
-    public float targetAngleY = 30f;
+    [Header("Hands & Rotation")]
+    public Transform hourHand;
+    public Transform minuteHand;
+    public float targetHourAngle = 30f;      // e.g., 1 o'clock = 30°
+    public float targetMinuteAngle = 0f;     // e.g., 12 o'clock = 0°
     public float angleTolerance = 5f;
     public float rotationSensitivity = 100f;
 
     [Header("Camera Setup")]
-    public Camera clockCamera;           // Drag the ClockCamera here
-    public Camera playerCamera;          // Drag the player's main camera here
+    public Camera clockCamera;
+    public Camera playerCamera;
 
     [Header("Audio")]
     public AudioClip successSound;
@@ -23,70 +25,80 @@ public class ClockInteractable : MonoBehaviour, IInteractable
 
     private bool isInteracting = false;
     private bool hasTriggered = false;
-    private float currentHandY = 0f;
+    private int selectedHand = 0;   // 0 = minute, 1 = hour
 
     void Start()
-{
-    audioSource = GetComponent<AudioSource>();
-    if (audioSource == null)
-        audioSource = gameObject.AddComponent<AudioSource>();
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
 
-    // Find the player automatically by tag
-    if (player == null)
-        player = GameObject.FindGameObjectWithTag("Player");
-        // Auto-find mouseLook if not assigned (try camera)
+        // Find player by tag
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
+
+        // Find mouseLook (on camera)
         if (mouseLook == null)
         {
-            // Check main camera first
             if (Camera.main != null)
                 mouseLook = Camera.main.GetComponent<MouseLook>();
-            // If not there, search player's children
             if (mouseLook == null && player != null)
                 mouseLook = player.GetComponentInChildren<MouseLook>();
         }
-        if (player != null)
-    {
-       // mouseLook = player.GetComponent<MouseLook>();
-        playerMovement = player.GetComponent<PlayerMovement>();
-        if (mouseLook == null) Debug.LogError("MouseLook script not found on Player");
-        if (playerMovement == null) Debug.LogError("PlayerMovement script not found on Player");
-    }
-    else
-    {
-        Debug.LogError("No GameObject with tag 'Player' found. Please assign player manually.");
-    }
 
-    // Auto‑assign cameras if missing
-    if (playerCamera == null)
-        playerCamera = Camera.main;
-    
-    if (clockCamera == null && transform != null)
-        clockCamera = GetComponentInChildren<Camera>();
-    
-    if (clockCamera != null)
-        clockCamera.enabled = false;
-}
+        if (player != null)
+        {
+            playerMovement = player.GetComponent<PlayerMovement>();
+            if (mouseLook == null) Debug.LogError("MouseLook not found!");
+            if (playerMovement == null) Debug.LogError("PlayerMovement not found!");
+        }
+        else
+        {
+            Debug.LogError("Player not found! Tag it as 'Player'.");
+        }
+
+        // Auto-assign cameras
+        if (playerCamera == null)
+            playerCamera = Camera.main;
+
+        if (clockCamera == null)
+            clockCamera = GetComponentInChildren<Camera>();
+
+        if (clockCamera != null)
+            clockCamera.enabled = false;
+    }
 
     void Update()
     {
         if (!isInteracting) return;
 
-        // Rotate hand with mouse movement
+        // Rotate selected hand with mouse X
         float mouseX = Input.GetAxis("Mouse X") * rotationSensitivity * Time.deltaTime;
         if (mouseX != 0f)
         {
-            Vector3 rot = handTransform.localEulerAngles;
+            Transform hand = (selectedHand == 0) ? minuteHand : hourHand;
+            Vector3 rot = hand.localEulerAngles;
             rot.y += mouseX;
-            handTransform.localEulerAngles = rot;
+            hand.localEulerAngles = rot;
         }
 
-        // Check target angle
+        // Switch hand with Tab key
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            selectedHand = 1 - selectedHand; // toggle between 0 and 1
+            Debug.Log("Now controlling: " + (selectedHand == 0 ? "Minute Hand" : "Hour Hand"));
+        }
+
+        // Check if both hands are within tolerance of their target angles
         if (!hasTriggered)
         {
-            currentHandY = handTransform.localEulerAngles.y;
-            float normalized = NormalizeAngle(currentHandY);
-            float targetNorm = NormalizeAngle(targetAngleY);
-            if (Mathf.Abs(normalized - targetNorm) <= angleTolerance)
+            float minuteAngle = NormalizeAngle(minuteHand.localEulerAngles.y);
+            float hourAngle = NormalizeAngle(hourHand.localEulerAngles.y);
+            float targetMin = NormalizeAngle(targetMinuteAngle);
+            float targetHour = NormalizeAngle(targetHourAngle);
+
+            if (Mathf.Abs(minuteAngle - targetMin) <= angleTolerance &&
+                Mathf.Abs(hourAngle - targetHour) <= angleTolerance)
             {
                 hasTriggered = true;
                 OnTargetReached();
@@ -104,7 +116,7 @@ public class ClockInteractable : MonoBehaviour, IInteractable
     {
         if (successSound != null)
             audioSource.PlayOneShot(successSound);
-        Debug.Log("Target reached: " + targetAngleY);
+        Debug.Log("Clock puzzle solved! Both hands at correct positions.");
     }
 
     private float NormalizeAngle(float angle)
@@ -124,43 +136,25 @@ public class ClockInteractable : MonoBehaviour, IInteractable
 
     private void EnterInteraction()
     {
-
         Debug.Log("EnterInteraction started");
         if (mouseLook == null) Debug.LogError("mouseLook is null");
         if (playerMovement == null) Debug.LogError("playerMovement is null");
         if (playerCamera == null) Debug.LogError("playerCamera is null");
         if (clockCamera == null) Debug.LogError("clockCamera is null");
 
-
-        Debug.Log("EnterInteraction called");
         isInteracting = true;
         hasTriggered = false;
+        selectedHand = 0; // start with minute hand
 
         // Disable player controls
         mouseLook.enabled = false;
         playerMovement.enabled = false;
-        Debug.Log("Player controls disabled");
 
         // Switch cameras
         if (playerCamera != null)
-        {
             playerCamera.enabled = false;
-            Debug.Log("Player camera disabled: " + playerCamera.name);
-        }
-        else
-        {
-            Debug.LogError("playerCamera is NULL! Assign it in Inspector.");
-        }
-
         if (clockCamera != null)
-        {
             clockCamera.enabled = true;
-            Debug.Log("Clock camera enabled: " + clockCamera.name);
-        }
-        else
-        {
-            Debug.LogError("clockCamera is NULL! Assign it in Inspector.");
-        }
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -168,16 +162,12 @@ public class ClockInteractable : MonoBehaviour, IInteractable
 
     private void ExitInteraction()
     {
-        Debug.Log("ExitInteraction called");
         if (!isInteracting) return;
-
         isInteracting = false;
 
-        // Switch back
         if (clockCamera != null) clockCamera.enabled = false;
         if (playerCamera != null) playerCamera.enabled = true;
 
-        // Re-enable player controls
         mouseLook.enabled = true;
         playerMovement.enabled = true;
 

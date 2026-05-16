@@ -4,7 +4,7 @@ using UnityEngine;
 public class LampPuzzleManager : MonoBehaviour
 {
     [Header("Correct Sequence")]
-    public LampInteractable[] correctOrder;  // Drag lamps in the correct order (e.g. short, middle, high)
+    public LampInteractable[] correctOrder;
 
     [Header("Reset Effect")]
     public float flickerDuration = 0.5f;
@@ -14,7 +14,7 @@ public class LampPuzzleManager : MonoBehaviour
     public AudioClip successSound;
     public AudioClip resetSound;
 
-    private int currentStep = 0;          // How many lamps correctly turned on so far
+    private List<LampInteractable> turnedOnOrder = new List<LampInteractable>();
     private bool puzzleCompleted = false;
     private List<LampInteractable> allLamps = new List<LampInteractable>();
     private AudioSource audioSource;
@@ -25,63 +25,77 @@ public class LampPuzzleManager : MonoBehaviour
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
 
-        // Collect all lamps in the scene (or assign manually)
         allLamps.AddRange(FindObjectsOfType<LampInteractable>());
+        Debug.Log($"Found {allLamps.Count} lamps.");
 
-        // Optional: verify that correctOrder array matches the number of lamps
         if (correctOrder.Length == 0)
             Debug.LogError("Correct order not set in LampPuzzleManager!");
+        else
+        {
+            Debug.Log("Correct order:");
+            for (int i = 0; i < correctOrder.Length; i++)
+                Debug.Log($"  {i + 1}: {correctOrder[i]?.name}");
+        }
     }
 
     public void OnLampToggled(LampInteractable lamp, bool turnedOn)
     {
         if (puzzleCompleted) return;
 
-        // If turning off a lamp, it's always a mistake (or we could allow? Usually puzzle requires turning on in order)
         if (!turnedOn)
         {
+            // Turning off any lamp resets the whole puzzle
+            Debug.Log("Lamp turned off ? resetting puzzle");
             ResetPuzzle();
             return;
         }
 
-        // Check if this lamp is the expected next one in the sequence
-        if (currentStep < correctOrder.Length && lamp == correctOrder[currentStep])
-        {
-            // Correct step
-            currentStep++;
-            Debug.Log($"Correct! Step {currentStep}/{correctOrder.Length}");
+        // Lamp turned on
+        if (turnedOnOrder.Contains(lamp))
+            return; // already on, ignore
 
-            if (currentStep >= correctOrder.Length)
+        turnedOnOrder.Add(lamp);
+        Debug.Log($"Turned on: {lamp.name}. Order: {string.Join(" -> ", turnedOnOrder.ConvertAll(l => l.name))}");
+
+        // Check if all lamps are now on
+        if (turnedOnOrder.Count == correctOrder.Length)
+        {
+            // Compare the sequence
+            bool correct = true;
+            for (int i = 0; i < correctOrder.Length; i++)
+            {
+                if (turnedOnOrder[i] != correctOrder[i])
+                {
+                    correct = false;
+                    break;
+                }
+            }
+
+            if (correct)
             {
                 CompletePuzzle();
             }
-        }
-        else
-        {
-            // Wrong lamp turned on – reset puzzle
-            ResetPuzzle();
+            else
+            {
+                Debug.Log("Wrong sequence! Resetting puzzle.");
+                ResetPuzzle();
+            }
         }
     }
 
     void ResetPuzzle()
     {
-        Debug.Log("Wrong order! Resetting lamps.");
-
-        // Play reset sound
+        Debug.Log("ResetPuzzle called");
         if (resetSound != null)
             audioSource.PlayOneShot(resetSound);
 
-        // Start flicker effect on all lamps
+        StopAllCoroutines();
         StartCoroutine(FlickerAndReset());
     }
 
     System.Collections.IEnumerator FlickerAndReset()
     {
-        // Store original states (which are currently wrong) – we'll reset to original default later
-        // But the requirement: "reset to the normal status" – normal status = initial states (high on, others off)
-        // We'll restore based on each lamp's isOnByDefault.
-
-        // Flicker: rapidly toggle lights
+        // Flicker all lamps
         float endTime = Time.time + flickerDuration;
         bool flickerState = false;
         while (Time.time < endTime)
@@ -91,36 +105,30 @@ public class LampPuzzleManager : MonoBehaviour
             yield return new WaitForSeconds(flickerInterval);
         }
 
-        // Restore to default states
+        // Turn all lamps off (default state)
         foreach (LampInteractable lamp in allLamps)
         {
-            lamp.ForceSetState(lamp.isOnByDefault);
+            lamp.ForceSetState(false);
         }
 
-        // Reset step counter
-        currentStep = 0;
+        // Clear the sequence
+        turnedOnOrder.Clear();
+        Debug.Log("Reset complete. All lamps off, order cleared.");
     }
 
     void SetAllLampsState(bool state)
     {
         foreach (LampInteractable lamp in allLamps)
-        {
             lamp.ForceSetState(state);
-        }
     }
 
     void CompletePuzzle()
     {
         puzzleCompleted = true;
-        Debug.Log("Puzzle complete!");
+        Debug.Log("??? PUZZLE COMPLETE! ???");
         if (successSound != null)
             audioSource.PlayOneShot(successSound);
-
-        // Optionally disable further interaction on lamps
-        foreach (LampInteractable lamp in allLamps)
-        {
-            // You can remove the interactable component or just ignore toggles via puzzleCompleted flag
-            // For now, we just prevent toggles because puzzleCompleted = true
-        }
+        // Optionally disable further lamp interactions
+        // foreach (var lamp in allLamps) lamp.enabled = false;
     }
 }
