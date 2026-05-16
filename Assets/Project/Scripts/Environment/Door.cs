@@ -9,6 +9,7 @@ namespace DoorScript
         public float smooth = 1.0f;
         public float DoorOpenAngle = -120.0f;
         public float DoorCloseAngle = 0.0f;
+        public ForestDoor forestDoor;
 
         //Allows the door to stay where you put it at the start
         private float currentTargetAngle;
@@ -20,13 +21,12 @@ namespace DoorScript
         {
             asource = GetComponent<AudioSource>();
 
-            //Slightly open, set the target to its current rotation
+            //Slightly open set the target to its current rotation
             currentTargetAngle = transform.localEulerAngles.y;
 
-            // If you manually rotated it in the Inspector, ensure its open that way
+            // if manually rotated in the Inspector ensure its open
             if (Mathf.Abs(currentTargetAngle - DoorCloseAngle) > 5f)
             {
-                // Door is already partially open
             }
         }
 
@@ -56,6 +56,12 @@ namespace DoorScript
 
             asource.clip = open ? openDoor : closeDoor;
             asource.Play();
+
+            if (open)
+            {
+                forestDoor.OpenDoor();
+            }
         }
+
     }
 }
