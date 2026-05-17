@@ -4,6 +4,9 @@ using UnityEngine;
 public class LampPuzzleManager : MonoBehaviour
 {
 
+    public bool IsPuzzleCompleted => puzzleCompleted;   // Read-only property
+
+
     public RewardRevealer rewardRevealer;   
     [Header("Correct Sequence")]
     public LampInteractable[] correctOrder;
