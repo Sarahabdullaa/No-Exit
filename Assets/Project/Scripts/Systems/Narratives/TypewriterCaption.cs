@@ -6,13 +6,16 @@ public class TypewriterCaption : MonoBehaviour
 {
     public GameObject subtitlePanel;
     public TextMeshProUGUI captionText;
+    public TextMeshProUGUI objectiveText;
     public Transform player;
+
+    public AudioSource typingAudioSource;
 
     [TextArea(2, 4)]
     public string[] narrativeMessages;
 
     [TextArea]
-    public string objectiveMessage = "Objective: Enter the room on your right";
+    public string objectiveMessage = "Objective: Enter the room on your right.";
 
     public float delayBeforeShow = 2f;
     public float letterDelay = 0.06f;
@@ -28,6 +31,8 @@ public class TypewriterCaption : MonoBehaviour
     {
         subtitlePanel.SetActive(false);
         captionText.text = "";
+        objectiveText.text = "";
+
         StartCoroutine(PlayNarratives());
     }
 
@@ -41,22 +46,24 @@ public class TypewriterCaption : MonoBehaviour
         {
             captionText.text = "";
 
+            StartTypingSound();
+
             foreach (char letter in narrativeMessages[i])
             {
                 captionText.text += letter;
                 yield return new WaitForSeconds(letterDelay);
             }
 
+            StopTypingSound();
+
             yield return new WaitForSeconds(delayBetweenMessages);
         }
 
         yield return new WaitForSeconds(stayAfterNarrative);
 
-       
         captionText.text = "";
         subtitlePanel.SetActive(false);
 
-      
         movementCheckStartPosition = player.position;
         waitingForMovement = true;
     }
@@ -78,18 +85,36 @@ public class TypewriterCaption : MonoBehaviour
 
     IEnumerator ShowObjective()
     {
-        subtitlePanel.SetActive(true);
-        captionText.text = "";
+        objectiveText.text = "";
+
+        StartTypingSound();
 
         foreach (char letter in objectiveMessage)
         {
-            captionText.text += letter;
+            objectiveText.text += letter;
             yield return new WaitForSeconds(letterDelay);
         }
 
+        StopTypingSound();
+
         yield return new WaitForSeconds(3f);
 
-        captionText.text = "";
-        subtitlePanel.SetActive(false);
+        objectiveText.text = "";
+    }
+
+    void StartTypingSound()
+    {
+        if (typingAudioSource != null && !typingAudioSource.isPlaying)
+        {
+            typingAudioSource.Play();
+        }
+    }
+
+    void StopTypingSound()
+    {
+        if (typingAudioSource != null && typingAudioSource.isPlaying)
+        {
+            typingAudioSource.Stop();
+        }
     }
 }
