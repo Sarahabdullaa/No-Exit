@@ -2,15 +2,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 
-
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI;
     public GameObject settingsPanel;
     public GameObject crosshair;
+
+    // UI references
+    public GameObject captionUI;
+    public GameObject controlsPopup;
+
     public AudioMixer mixer;
 
     private bool isPaused = false;
+
     void Start()
     {
         Time.timeScale = 1f;
@@ -30,27 +35,46 @@ public class PauseMenu : MonoBehaviour
     void Pause()
     {
         pauseMenuUI.SetActive(true);
+
         isPaused = true;
+
         Time.timeScale = 0f;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        // Hide crosshair
         if (crosshair != null)
             crosshair.SetActive(false);
+
+        // Hide captions
+        if (captionUI != null)
+            captionUI.SetActive(false);
+
+        // Hide controls popup
+        if (controlsPopup != null)
+            controlsPopup.SetActive(false);
     }
 
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;  
+        settingsPanel.SetActive(false);
+
+        Time.timeScale = 1f;
+
         isPaused = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        // Show crosshair again
         if (crosshair != null)
             crosshair.SetActive(true);
+
+        // Show captions again
+        if (captionUI != null)
+            captionUI.SetActive(true);
     }
 
     public void OpenSettings()
@@ -68,13 +92,17 @@ public class PauseMenu : MonoBehaviour
     public void QuitToMenu()
     {
         Time.timeScale = 1f;
+
         SceneManager.LoadScene("MainMenu");
     }
+
+    // MUSIC
     public void SetMusicVolume(float value)
     {
         mixer.SetFloat("MusicVolume", Mathf.Lerp(-80f, 0f, value));
     }
 
+    // SFX
     public void SetSFXVolume(float value)
     {
         mixer.SetFloat("SFXVolume", Mathf.Lerp(-80f, 0f, value));

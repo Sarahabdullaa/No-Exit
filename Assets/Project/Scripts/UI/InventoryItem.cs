@@ -8,6 +8,9 @@ public class InventoryItem : MonoBehaviour
     public GameObject hudIcon;
     public GameObject journalIcon;
 
+    [Header("Slot")]
+    public InventorySlot inventorySlot;
+
     [Header("Preview")]
     public Image itemPreview;
     public Sprite previewSprite;
@@ -21,37 +24,39 @@ public class InventoryItem : MonoBehaviour
 
     public string itemTitle;
 
-    private bool playerNearby = false;
-
-    void Update()
+    void Start()
     {
-        if (playerNearby && Input.GetKeyDown(KeyCode.E))
-        {
-            PickupItem();
-        }
+        // Hide HUD icon
+        if (hudIcon != null)
+            hudIcon.SetActive(false);
+
+        // Hide journal item
+        if (journalIcon != null)
+            journalIcon.SetActive(false);
     }
 
-    void PickupItem()
+    public void PickupItem()
     {
-        hudIcon.SetActive(true);
-        journalIcon.SetActive(true);
+        // SHOW HUD ICON
+        if (hudIcon != null)
+            hudIcon.SetActive(true);
 
-        Destroy(gameObject);
-    }
+        // SHOW JOURNAL ITEM
+        if (journalIcon != null)
+            journalIcon.SetActive(true);
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerNearby = true;
-        }
-    }
+        // UNLOCK SLOT
+        if (inventorySlot != null)
+            inventorySlot.unlocked = true;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerNearby = false;
-        }
+        // SET PREVIEW DATA
+        if (itemPreview != null)
+            itemPreview.sprite = previewSprite;
+
+        if (itemName != null)
+            itemName.text = itemTitle;
+
+        if (itemDescription != null)
+            itemDescription.text = descriptionText;
     }
 }
