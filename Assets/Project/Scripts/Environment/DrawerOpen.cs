@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DrawerOpen : MonoBehaviour
+public class DrawerOpen : MonoBehaviour , IInteractable
 {
     [Header("Movement")]
     public Vector3 openOffset = new Vector3(0, 0, 1.5f);
@@ -57,6 +57,20 @@ public class DrawerOpen : MonoBehaviour
         else
         {
             if (closeSound != null) audioSource.PlayOneShot(closeSound);
+        }
+    }
+
+    public void Interact()
+    {
+        isOpen = !isOpen;
+
+        if (isOpen)
+        {
+            audioSource.PlayOneShot(openSound);
+        }
+        else
+        {
+            audioSource.PlayOneShot(closeSound);
         }
     }
 
