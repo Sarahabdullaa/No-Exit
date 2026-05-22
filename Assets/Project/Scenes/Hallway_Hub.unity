@@ -12025,11 +12025,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &290364353 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7874842340335782137, guid: 60280ecfb831c1c4ea386ee608e115fb, type: 3}
-  m_PrefabInstance: {fileID: 6696905829014966642}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &293349404
 GameObject:
   m_ObjectHideFlags: 0
@@ -19520,6 +19515,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4f13ffc88a9e9445b4f0a17a1c600ce, type: 3}
+--- !u!1 &436536629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6793902857777530075, guid: c4f13ffc88a9e9445b4f0a17a1c600ce, type: 3}
+  m_PrefabInstance: {fileID: 436536628}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &438360539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -97045,7 +97045,7 @@ PrefabInstance:
     - target: {fileID: 6554210657269776266, guid: d10997e026835bf4c98d80f0a3c68ce7, type: 3}
       propertyPath: 'lightGroupsToFadeOut.Array.data[1]'
       value: 
-      objectReference: {fileID: 290364353}
+      objectReference: {fileID: 436536629}
     - target: {fileID: 6586855857559948382, guid: d10997e026835bf4c98d80f0a3c68ce7, type: 3}
       propertyPath: m_Mesh
       value: 
