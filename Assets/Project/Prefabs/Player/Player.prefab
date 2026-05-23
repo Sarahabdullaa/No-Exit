@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4027689185266175806}
   - component: {fileID: 8185310521962501700}
   - component: {fileID: 3529583267939949855}
+  - component: {fileID: -1097533360051624041}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -76,6 +77,12 @@ MonoBehaviour:
   controller: {fileID: 4027689185266175806}
   speed: 5
   gravity: -9.81
+  jumpHeight: 1
+  groundCheck: {fileID: 0}
+  groundDistance: 0.4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &3529583267939949855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +100,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   cameraTransform: {fileID: 5620546575961540437}
+--- !u!114 &-1097533360051624041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675636275528102465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 053535d590e73114c9de7a1f32ae226d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunHoldPoint: {fileID: 0}
+  shootRange: 20
+  starLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  shootSound: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
+  noAmmoSound: {fileID: 0}
 --- !u!1 &6883312422559739978
 GameObject:
   m_ObjectHideFlags: 0
