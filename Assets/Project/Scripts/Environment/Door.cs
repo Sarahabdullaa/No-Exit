@@ -11,6 +11,10 @@ namespace DoorScript
         public float DoorCloseAngle = 0.0f;
         public ForestDoor forestDoor;
 
+        public GameObject endingCanvas;
+        public MonoBehaviour playerController;
+        public MonoBehaviour mouseLook;
+
         //Allows the door to stay where you put it at the start
         private float currentTargetAngle;
 
@@ -59,7 +63,24 @@ namespace DoorScript
 
             if (open)
             {
-                forestDoor.OpenDoor();
+                if (forestDoor != null)
+                {
+                    forestDoor.OpenDoor();
+                }
+
+                if (endingCanvas != null)
+                {
+                    endingCanvas.SetActive(true);
+
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+
+                    if (playerController != null)
+                        playerController.enabled = false;
+
+                    if (mouseLook != null)
+                        mouseLook.enabled = false;
+                }
             }
         }
 
