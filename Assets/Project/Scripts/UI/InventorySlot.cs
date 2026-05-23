@@ -4,6 +4,9 @@ using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
+    [HideInInspector]
+    public bool unlocked = false;
+
     public Image previewImage;
     public TMP_Text itemName;
     public TMP_Text itemDescription;
@@ -17,12 +20,14 @@ public class InventorySlot : MonoBehaviour
 
     public void SelectItem()
     {
+        // STOP EMPTY SLOTS
+        if (!unlocked)
+            return;
+
         previewImage.sprite = itemSprite;
+        previewImage.color = Color.white;
 
-        previewImage.color = new Color(1, 1, 1, 1);
-
-        itemName.SetText(itemTitle);
-
-        itemDescription.SetText(descriptionText);
+        itemName.text = itemTitle;
+        itemDescription.text = descriptionText;
     }
 }

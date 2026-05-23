@@ -10,11 +10,14 @@ public class MainMenu : MonoBehaviour
     public GameObject optionsPanel;
     public GameObject creditsPanel;
 
+    // PAUSE MENU
+    public GameObject pauseMenu;
+
     public AudioMixer mixer;
 
     // QUALITY
     public TextMeshProUGUI qualityText;
-    private int currentQuality = 0;
+    private int currentQuality;
 
     // BRIGHTNESS
     public CanvasGroup brightnessOverlay;
@@ -27,16 +30,22 @@ public class MainMenu : MonoBehaviour
     public GameObject graphicsPanel;
     public GameObject controlsPanel;
 
-
     void Start()
     {
-        ShowAudio(); // default tab
+        ShowAudio();
 
-        // Set current quality text at start
-        qualityText.text = QualitySettings.names[currentQuality];
+        // Get current quality
+        currentQuality = QualitySettings.GetQualityLevel();
 
-        // Sync fullscreen toggle
-        fullscreenToggle.isOn = Screen.fullScreen;
+        // Update text
+        if (qualityText != null)
+            qualityText.text = QualitySettings.names[currentQuality];
+
+        // Fullscreen toggle sync
+        if (fullscreenToggle != null)
+            fullscreenToggle.isOn = Screen.fullScreen;
+
+        Debug.Log("Current Quality: " + QualitySettings.names[currentQuality]);
     }
 
     // START GAME
@@ -48,23 +57,50 @@ public class MainMenu : MonoBehaviour
     // OPEN OPTIONS
     public void OpenOptions()
     {
-        mainMenuUI.SetActive(false);
-        optionsPanel.SetActive(true);
+        Debug.Log("OPEN OPTIONS");
+
+        // Main menu scene support
+        if (mainMenuUI != null)
+            mainMenuUI.SetActive(false);
+
+        // Pause menu support
+        if (pauseMenu != null)
+            pauseMenu.SetActive(false);
+
+        if (optionsPanel != null)
+            optionsPanel.SetActive(true);
     }
 
     // OPEN CREDITS
     public void OpenCredits()
     {
-        mainMenuUI.SetActive(false);
-        creditsPanel.SetActive(true);
+        if (mainMenuUI != null)
+            mainMenuUI.SetActive(false);
+
+        if (creditsPanel != null)
+            creditsPanel.SetActive(true);
     }
 
-    // BACK TO MAIN MENU
+    // BACK BUTTON
     public void BackToMenu()
     {
-        mainMenuUI.SetActive(true);
-        optionsPanel.SetActive(false);
-        creditsPanel.SetActive(false);
+        Debug.Log("BACK BUTTON");
+
+        // Close options
+        if (optionsPanel != null)
+            optionsPanel.SetActive(false);
+
+        // Main menu scene
+        if (mainMenuUI != null)
+            mainMenuUI.SetActive(true);
+
+        // Pause menu scene
+        if (pauseMenu != null)
+            pauseMenu.SetActive(true);
+
+        // Close credits if open
+        if (creditsPanel != null)
+            creditsPanel.SetActive(false);
     }
 
     // QUIT GAME
@@ -77,23 +113,38 @@ public class MainMenu : MonoBehaviour
     // TAB SWITCHING
     public void ShowAudio()
     {
-        audioPanel.SetActive(true);
-        graphicsPanel.SetActive(false);
-        controlsPanel.SetActive(false);
+        if (audioPanel != null)
+            audioPanel.SetActive(true);
+
+        if (graphicsPanel != null)
+            graphicsPanel.SetActive(false);
+
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
     }
 
     public void ShowGraphics()
     {
-        audioPanel.SetActive(false);
-        graphicsPanel.SetActive(true);
-        controlsPanel.SetActive(false);
+        if (audioPanel != null)
+            audioPanel.SetActive(false);
+
+        if (graphicsPanel != null)
+            graphicsPanel.SetActive(true);
+
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
     }
 
     public void ShowControls()
     {
-        audioPanel.SetActive(false);
-        graphicsPanel.SetActive(false);
-        controlsPanel.SetActive(true);
+        if (audioPanel != null)
+            audioPanel.SetActive(false);
+
+        if (graphicsPanel != null)
+            graphicsPanel.SetActive(false);
+
+        if (controlsPanel != null)
+            controlsPanel.SetActive(true);
     }
 
     // AUDIO SETTINGS
@@ -109,31 +160,41 @@ public class MainMenu : MonoBehaviour
         mixer.SetFloat("SFXVolume", volume);
     }
 
-    // GRAPHICS SETTINGS
-
-    // QUALITY
+    // QUALITY SETTINGS
     public void IncreaseQuality()
     {
+        Debug.Log("INCREASE BUTTON CLICKED");
+
         currentQuality++;
 
         if (currentQuality >= QualitySettings.names.Length)
             currentQuality = 0;
 
-        qualityText.text = QualitySettings.names[currentQuality];
+        QualitySettings.SetQualityLevel(currentQuality, true);
 
-        Debug.Log(qualityText.text);
+        if (qualityText != null)
+            qualityText.text = QualitySettings.names[currentQuality];
+
+        Debug.Log("New Quality Index: " + currentQuality);
+        Debug.Log("New Quality Name: " + QualitySettings.names[currentQuality]);
     }
 
     public void DecreaseQuality()
     {
+        Debug.Log("DECREASE BUTTON CLICKED");
+
         currentQuality--;
 
         if (currentQuality < 0)
             currentQuality = QualitySettings.names.Length - 1;
 
-        qualityText.text = QualitySettings.names[currentQuality];
+        QualitySettings.SetQualityLevel(currentQuality, true);
 
-        Debug.Log(qualityText.text);
+        if (qualityText != null)
+            qualityText.text = QualitySettings.names[currentQuality];
+
+        Debug.Log("New Quality Index: " + currentQuality);
+        Debug.Log("New Quality Name: " + QualitySettings.names[currentQuality]);
     }
 
     // BRIGHTNESS
