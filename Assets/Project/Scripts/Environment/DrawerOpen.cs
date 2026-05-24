@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class DrawerOpen : MonoBehaviour
+public class DrawerOpen : MonoBehaviour, IInteractable
 {
-    [Header("Movement")]
+   
     public Vector3 openOffset = new Vector3(0, 0, 1.5f);
     public float speed = 5f;
 
-    [Header("Audio")]
+    
     public AudioClip openSound;
     public AudioClip closeSound;
-    public AudioClip lockedSound;    // Optional: play when player tries to open locked drawer
+    public AudioClip lockedSound;    
 
-    [Header("Lock")]
-    public bool isLocked = true;     // Start locked
+  
+    public bool isLocked = true;    
 
     private AudioSource audioSource;
     private Vector3 closedPos;
@@ -32,15 +32,14 @@ public class DrawerOpen : MonoBehaviour
     public void UnlockDrawer()
     {
         isLocked = false;
-        Debug.Log("Drawer unlocked!");
-        // Optional: play a success sound or effect
+      
     }
 
     public void ToggleDrawer()
     {
         if (isLocked)
         {
-            // Play locked sound if assigned
+           
             if (lockedSound != null)
                 audioSource.PlayOneShot(lockedSound);
             else
@@ -64,5 +63,19 @@ public class DrawerOpen : MonoBehaviour
     {
         Vector3 target = isOpen ? openPos : closedPos;
         transform.localPosition = Vector3.Lerp(transform.localPosition, target, Time.deltaTime * speed);
+    }
+
+    public void Interact()
+    {
+        isOpen = !isOpen;
+
+        if (isOpen)
+        {
+            audioSource.PlayOneShot(openSound);
+        }
+        else
+        {
+            audioSource.PlayOneShot(closeSound);
+        }
     }
 }
