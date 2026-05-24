@@ -2,19 +2,21 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class Room2NarrativeTrigger : MonoBehaviour
+public class Room4NarrativeTrigger : MonoBehaviour
 {
+    public static bool room4Finished = false;
+
     public GameObject subtitlePanel;
     public TextMeshProUGUI captionText;
     public TextMeshProUGUI objectiveText;
+    public Transform player;
+    public AudioSource typingAudioSource;
 
     [TextArea(2, 4)]
     public string[] narrativeMessages;
 
     [TextArea]
-    public string objectiveMessage = "Objective: Look around the room for clues.";
-
-    public AudioSource typingAudioSource;
+    public string objectiveMessage = "Objective: Face what this room is hiding.";
 
     public float letterDelay = 0.06f;
     public float delayBetweenMessages = 1f;
@@ -23,23 +25,30 @@ public class Room2NarrativeTrigger : MonoBehaviour
 
     private bool hasTriggered = false;
 
-    private void Start()
+    void Start()
     {
-        subtitlePanel.SetActive(false);
-        captionText.text = "";
-        objectiveText.text = "";
+        room4Finished = false;
+
+        if (subtitlePanel != null)
+            subtitlePanel.SetActive(false);
+
+        if (captionText != null)
+            captionText.text = "";
+
+        if (objectiveText != null)
+            objectiveText.text = "";
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasTriggered && other.CompareTag("Player"))
+        if (!hasTriggered && TypewriterCaption.hallwayFinished && other.CompareTag("Player"))
         {
             hasTriggered = true;
-            StartCoroutine(PlayRoom2Narrative());
+            StartCoroutine(PlayRoom4Narrative());
         }
     }
 
-    IEnumerator PlayRoom2Narrative()
+    IEnumerator PlayRoom4Narrative()
     {
         subtitlePanel.SetActive(true);
 
@@ -80,6 +89,8 @@ public class Room2NarrativeTrigger : MonoBehaviour
         yield return new WaitForSeconds(objectiveStayTime);
 
         objectiveText.text = "";
+
+        room4Finished = true;
     }
 
     void StartTypingSound()
