@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ChestOpen : MonoBehaviour , IInteractable
+public class ChestOpen : MonoBehaviour
 {
     public Transform lid;
     public float openAngle = -90f;
@@ -56,19 +56,4 @@ public class ChestOpen : MonoBehaviour , IInteractable
             audioSource.PlayOneShot(closeSound);
         }
     }
-
-    public void Interact()
-    {
-        isOpen = !isOpen;
-
-        if (isOpen)
-        {
-            audioSource.PlayOneShot(openSound);
-        }
-        else
-        {
-            audioSource.PlayOneShot(closeSound);
-        }
-    }
-
 }
