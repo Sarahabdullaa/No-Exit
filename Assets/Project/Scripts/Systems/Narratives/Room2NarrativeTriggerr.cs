@@ -2,49 +2,50 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class TypewriterCaption : MonoBehaviour
+public class Room2NarrativeTriggerr : MonoBehaviour
 {
-    public static bool hallwayFinished = false;
-
     public GameObject subtitlePanel;
     public TextMeshProUGUI captionText;
     public TextMeshProUGUI objectiveText;
     public Transform player;
-
     public AudioSource typingAudioSource;
 
     [TextArea(2, 4)]
     public string[] narrativeMessages;
 
     [TextArea]
-    public string objectiveMessage = "Objective: Enter the room on your right.";
+    public string objectiveMessage = "Objective: Look around the room for clues.";
 
-    public float delayBeforeShow = 2f;
     public float letterDelay = 0.06f;
     public float delayBetweenMessages = 1f;
     public float stayAfterNarrative = 1.5f;
-    public float moveThreshold = 0.3f;
     public float objectiveStayTime = 3f;
 
-    private bool waitingForMovement = false;
-    private bool objectiveShown = false;
-    private Vector3 movementCheckStartPosition;
+    private bool hasTriggered = false;
 
     void Start()
     {
-        hallwayFinished = false;
+        if (subtitlePanel != null)
+            subtitlePanel.SetActive(false);
 
-        subtitlePanel.SetActive(false);
-        captionText.text = "";
-        objectiveText.text = "";
+        if (captionText != null)
+            captionText.text = "";
 
-        StartCoroutine(PlayNarratives());
+        if (objectiveText != null)
+            objectiveText.text = "";
     }
 
-    IEnumerator PlayNarratives()
+    private void OnTriggerEnter(Collider other)
     {
-        yield return new WaitForSeconds(delayBeforeShow);
+        if (!hasTriggered && TypewriterCaption.hallwayFinished && other.CompareTag("Player"))
+        {
+            hasTriggered = true;
+            StartCoroutine(PlayRoom2Narrative());
+        }
+    }
 
+    IEnumerator PlayRoom2Narrative()
+    {
         subtitlePanel.SetActive(true);
 
         for (int i = 0; i < narrativeMessages.Length; i++)
@@ -69,27 +70,6 @@ public class TypewriterCaption : MonoBehaviour
         captionText.text = "";
         subtitlePanel.SetActive(false);
 
-        movementCheckStartPosition = player.position;
-        waitingForMovement = true;
-    }
-
-    void Update()
-    {
-        if (waitingForMovement && !objectiveShown)
-        {
-            float distanceMoved = Vector3.Distance(player.position, movementCheckStartPosition);
-
-            if (distanceMoved > moveThreshold)
-            {
-                waitingForMovement = false;
-                objectiveShown = true;
-                StartCoroutine(ShowObjective());
-            }
-        }
-    }
-
-    IEnumerator ShowObjective()
-    {
         objectiveText.text = "";
 
         StartTypingSound();
@@ -105,7 +85,6 @@ public class TypewriterCaption : MonoBehaviour
         yield return new WaitForSeconds(objectiveStayTime);
 
         objectiveText.text = "";
-        hallwayFinished = true;
     }
 
     void StartTypingSound()
