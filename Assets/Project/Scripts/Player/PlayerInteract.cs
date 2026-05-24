@@ -22,6 +22,7 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactDistance, interactableLayer))
         {
+            Debug.Log("Raycast hit: " + hit.collider.name);
             // Check if the object we hit has an IInteractable script
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
