@@ -12515,6 +12515,9 @@ MonoBehaviour:
   DoorOpenAngle: 120
   DoorCloseAngle: 0
   forestDoor: {fileID: 0}
+  endingCanvas: {fileID: 0}
+  playerController: {fileID: 0}
+  mouseLook: {fileID: 0}
   asource: {fileID: 0}
   openDoor: {fileID: 8300000, guid: 44b63b0db16ce624b97e45ebde0a0971, type: 3}
   closeDoor: {fileID: 8300000, guid: bc37ad25465405a428a26ff0facd9a7b, type: 3}
@@ -14613,6 +14616,9 @@ MonoBehaviour:
   DoorOpenAngle: -120
   DoorCloseAngle: 0
   forestDoor: {fileID: 0}
+  endingCanvas: {fileID: 0}
+  playerController: {fileID: 0}
+  mouseLook: {fileID: 0}
   asource: {fileID: 0}
   openDoor: {fileID: 8300000, guid: 44b63b0db16ce624b97e45ebde0a0971, type: 3}
   closeDoor: {fileID: 8300000, guid: bc37ad25465405a428a26ff0facd9a7b, type: 3}
@@ -23279,19 +23285,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6689036041284674117, guid: 63b3a485f3a3fa448bef3438e352069e, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -4501777746374777995, guid: 63b3a485f3a3fa448bef3438e352069e, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -1552023465018672373, guid: 63b3a485f3a3fa448bef3438e352069e, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2484665033948473043, guid: 63b3a485f3a3fa448bef3438e352069e, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 63b3a485f3a3fa448bef3438e352069e, type: 3}
       propertyPath: m_LocalScale.x
@@ -23347,7 +23353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8978103523514716507, guid: 63b3a485f3a3fa448bef3438e352069e, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23410,9 +23416,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitSound: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
   points: 1
-  starLight: {fileID: 9194854260990683880}
-  flashIntensity: 3
-  flashDuration: 0.15
 --- !u!108 &9194854260990683880
 Light:
   m_ObjectHideFlags: 0
