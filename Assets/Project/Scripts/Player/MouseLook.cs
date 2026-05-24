@@ -14,9 +14,9 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        // Getting mouse input
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        // Getting mouse input (Removed Time.deltaTime for a smooth, responsive feel)
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         // Vertical rotation (Looking up and down)
         xRotation -= mouseY;
