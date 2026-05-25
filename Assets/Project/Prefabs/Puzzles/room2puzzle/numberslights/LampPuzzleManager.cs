@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class LampPuzzleManager : MonoBehaviour
 {
+    public bool IsPuzzleCompleted => puzzleCompleted;
 
-    public bool IsPuzzleCompleted => puzzleCompleted;   // Read-only property
-
-
-    public RewardRevealer rewardRevealer;   
+    //public RewardRevealer rewardRevealer;
+    public GameObject puzzleReward;
     [Header("Correct Sequence")]
     public LampInteractable[] correctOrder;
 
@@ -49,23 +48,19 @@ public class LampPuzzleManager : MonoBehaviour
 
         if (!turnedOn)
         {
-            // Turning off any lamp resets the whole puzzle
             Debug.Log("Lamp turned off ? resetting puzzle");
             ResetPuzzle();
             return;
         }
 
-        // Lamp turned on
         if (turnedOnOrder.Contains(lamp))
-            return; // already on, ignore
+            return;
 
         turnedOnOrder.Add(lamp);
         Debug.Log($"Turned on: {lamp.name}. Order: {string.Join(" -> ", turnedOnOrder.ConvertAll(l => l.name))}");
 
-        // Check if all lamps are now on
         if (turnedOnOrder.Count == correctOrder.Length)
         {
-            // Compare the sequence
             bool correct = true;
             for (int i = 0; i < correctOrder.Length; i++)
             {
@@ -77,14 +72,9 @@ public class LampPuzzleManager : MonoBehaviour
             }
 
             if (correct)
-            {
                 CompletePuzzle();
-            }
             else
-            {
-                Debug.Log("Wrong sequence! Resetting puzzle.");
                 ResetPuzzle();
-            }
         }
     }
 
@@ -100,7 +90,6 @@ public class LampPuzzleManager : MonoBehaviour
 
     System.Collections.IEnumerator FlickerAndReset()
     {
-        // Flicker all lamps
         float endTime = Time.time + flickerDuration;
         bool flickerState = false;
         while (Time.time < endTime)
@@ -110,13 +99,9 @@ public class LampPuzzleManager : MonoBehaviour
             yield return new WaitForSeconds(flickerInterval);
         }
 
-        // Turn all lamps off (default state)
         foreach (LampInteractable lamp in allLamps)
-        {
             lamp.ForceSetState(false);
-        }
 
-        // Clear the sequence
         turnedOnOrder.Clear();
         Debug.Log("Reset complete. All lamps off, order cleared.");
     }
@@ -133,9 +118,15 @@ public class LampPuzzleManager : MonoBehaviour
         Debug.Log("??? PUZZLE COMPLETE! ???");
         if (successSound != null)
             audioSource.PlayOneShot(successSound);
-        // Optionally disable further lamp interactions
-        // foreach (var lamp in allLamps) lamp.enabled = false;
-           
 
+        if (puzzleReward != null)
+        {
+            puzzleReward.SetActive(true);
+            Debug.Log("Reward activated at: " + puzzleReward.transform.position);
+        }
+        else
+        {
+            Debug.LogWarning("puzzleReward not assigned in LampPuzzleManager!");
+        }
     }
 }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6803343073127235854}
   - component: {fileID: 230232068147292423}
   - component: {fileID: 2605555825712546591}
+  - component: {fileID: 2198857005735812900}
   m_Layer: 0
   m_Name: Puzzle Piece 5
   m_TagString: Untagged
@@ -151,3 +152,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryItem: {fileID: 0}
   pickupSound: {fileID: 0}
+--- !u!114 &2198857005735812900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4551059940569383072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9de191d3ffc9614da7d3830b0802a85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hiddenPiece: {fileID: 0}
+  enablePhysicsOnReveal: 1
+  revealSound: {fileID: 0}
