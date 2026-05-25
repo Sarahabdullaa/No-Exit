@@ -155,10 +155,8 @@ PlayableDirector:
     value: {fileID: 1530972250}
   - key: {fileID: 910395571170158621, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
     value: {fileID: 857726299}
-  - key: {fileID: 1111916617249300983, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
-    value: {fileID: 938807100}
-  - key: {fileID: 2956157075492187923, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
-    value: {fileID: 459502840}
+  - key: {fileID: -6563631167720127969, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
+    value: {fileID: 580528032}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &134835063
@@ -228,50 +226,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textDisplay: {fileID: 156582494}
   lines:
-  - I remember that day
-  - How cold it was
-  - Eight
   - Nine
   - Ten
-  - Ready or not
+  - I am coming
+  - I remember that day
+  - How cold it was
+  - 
   - He always hid too far
   - I told him not to go deep into the forest
   - But he never listened
-  - I remember it was getting weird
+  - I remember feeling
+  - Weird
   - Like something was wrong
-  - I called his name
-  - Once
-  - Twice
-  - But he did not answer
-  - Not even once
-  - Then I saw him
-  - Behind the tree
-  - I thought he was trying to scare me
-  - So I ran after him
-  - Wait!
-  - Slow down!
-  - Please stop!
   - 
-  - Oh No
-  - 
+  - Oh no
   - I did not understand what happened
-  - Everything suddenly felt cold
+  - But I just kept walking
   - And then
-  - there he was
+  - There he was
   - But that was not Haith
-  - Not anymore
   - That could not be my brother
   - There was blood everywhere
   - His blood
-  - And he
-  - he was gone
+  - He was gone
   - Forever
   - For a long time
   - I kept hearing the same words again and again
   - It was my fault
-  - 'maybe it was '
-  - 'But maybe '
-  - maybe it was not mine
+  - And maybe it was
+  - But maybe
+  - Maybe it was not mine
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   typingSpeed: 0.04
   lineDelay: 2
 --- !u!114 &156582494
@@ -436,6 +434,135 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 425.11612, y: 300.02103, z: -440.55267}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &580528031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 580528033}
+  - component: {fileID: 580528032}
+  m_Layer: 0
+  m_Name: CutsceneAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &580528032
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580528031}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &580528033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580528031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1192.6699, y: -27.87823, z: 1811.7021}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -666,7 +793,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 857726299}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 57653a562ed51894bbc99e4d93acf8d5, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: c68fa46e9fc61ba479851df202b1bea2, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 1425345768}
@@ -1173,3 +1300,4 @@ SceneRoots:
   - {fileID: 938807102}
   - {fileID: 459502842}
   - {fileID: 134835063}
+  - {fileID: 580528033}
