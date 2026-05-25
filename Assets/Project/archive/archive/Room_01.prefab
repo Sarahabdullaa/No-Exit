@@ -51425,8 +51425,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6527ff003bb759a4594d1ff15cecce99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hourHand: {fileID: 9052111923539459647}
-  minuteHand: {fileID: 703811976812123197}
+  hourHand: {fileID: 703811976812123197}
+  minuteHand: {fileID: 9052111923539459647}
   targetHourAngle: 30
   targetMinuteAngle: 0
   angleTolerance: 5
