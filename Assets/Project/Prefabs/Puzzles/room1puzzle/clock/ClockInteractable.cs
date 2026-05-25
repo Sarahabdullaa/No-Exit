@@ -94,10 +94,19 @@ public class ClockInteractable : MonoBehaviour, IInteractable
         ExitInteraction();
         if (puzzleReward != null)
         {
-            puzzleReward.SetActive(true);
+          
             // Optional: play a sound to signal reward appears
             if (successSound != null)
                 AudioSource.PlayClipAtPoint(successSound, puzzleReward.transform.position);
+            if (puzzleReward != null)
+            {
+                puzzleReward.SetActive(true);
+                Debug.Log("Reward activated at: " + puzzleReward.transform.position);
+            }
+            else
+            {
+                Debug.LogWarning("puzzleReward not assigned in ClockInteractable!");
+            }
         }
         // ExitInteraction();
     }
