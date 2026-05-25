@@ -32823,8 +32823,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6527ff003bb759a4594d1ff15cecce99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hourHand: {fileID: 703811976812123197}
-  minuteHand: {fileID: 9052111923539459647}
+  hourHand: {fileID: 9052111923539459647}
+  minuteHand: {fileID: 703811976812123197}
   targetHourAngle: 30
   targetMinuteAngle: 0
   angleTolerance: 5
@@ -51636,5 +51636,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985ce2404b0ebbd40842d3785aaa68b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popDuration: 0.3
+  popDuration: 3
   popScale: {x: 1.2, y: 1.2, z: 1.2}
