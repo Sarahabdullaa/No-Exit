@@ -89,7 +89,7 @@ public class GunController : MonoBehaviour
         if (isGunEquipped && Input.GetKeyDown(KeyCode.E))
             Shoot();
 
-        if (isGunEquipped && Input.GetKeyDown(KeyCode.DownArrow))
+        if (isGunEquipped && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)))
             UnequipGun();
     }
 
