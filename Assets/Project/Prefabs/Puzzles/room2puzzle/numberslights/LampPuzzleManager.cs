@@ -128,5 +128,6 @@ public class LampPuzzleManager : MonoBehaviour
         {
             Debug.LogWarning("puzzleReward not assigned in LampPuzzleManager!");
         }
+        PuzzleProgress.LampCompleted = true;
     }
 }

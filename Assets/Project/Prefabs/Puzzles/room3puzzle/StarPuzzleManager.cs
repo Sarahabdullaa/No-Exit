@@ -33,7 +33,7 @@ public class StarPuzzleManager : MonoBehaviour
     {
         puzzleCompleted = true;
         Debug.Log("All stars destroyed! Puzzle complete.");
-
+        PuzzleProgress.StarCompleted = true;
         if (puzzleCompleteSound != null)
             AudioSource.PlayClipAtPoint(puzzleCompleteSound, Camera.main.transform.position);
 

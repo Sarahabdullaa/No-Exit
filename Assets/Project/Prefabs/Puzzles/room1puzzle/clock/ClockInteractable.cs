@@ -82,8 +82,8 @@ public class ClockInteractable : MonoBehaviour, IInteractable
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Escape))
-            ExitInteraction();
+        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+                ExitInteraction();
     }
 
     private void OnTargetReached()
@@ -108,7 +108,7 @@ public class ClockInteractable : MonoBehaviour, IInteractable
                 Debug.LogWarning("puzzleReward not assigned in ClockInteractable!");
             }
         }
-        // ExitInteraction();
+        PuzzleProgress.ClockCompleted = true;
     }
 
     private float NormalizeAngle(float angle)
