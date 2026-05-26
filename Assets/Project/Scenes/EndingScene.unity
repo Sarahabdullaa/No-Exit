@@ -157,6 +157,14 @@ PlayableDirector:
     value: {fileID: 857726299}
   - key: {fileID: -6563631167720127969, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
     value: {fileID: 580528032}
+  - key: {fileID: -1058643055939073985, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
+    value: {fileID: 580528032}
+  - key: {fileID: -6639120456942756851, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
+    value: {fileID: 580528032}
+  - key: {fileID: 3392506269322623176, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
+    value: {fileID: 580528032}
+  - key: {fileID: 8181504971337008917, guid: fed98938ff696d949aa57bdf6b6b1b7e, type: 2}
+    value: {fileID: 580528032}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &134835063
@@ -209,7 +217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 107}
+  m_AnchoredPosition: {x: 0, y: 95}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &156582493
@@ -239,7 +247,7 @@ MonoBehaviour:
   - Weird
   - Like something was wrong
   - 
-  - Oh no
+  - 
   - I did not understand what happened
   - But I just kept walking
   - And then
@@ -319,8 +327,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 180
-  m_fontSizeBase: 180
+  m_fontSize: 160
+  m_fontSizeBase: 160
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -357,7 +365,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -443.07245, y: 0, z: -346.76184, w: -59.12831}
+  m_margin: {x: -443.07245, y: 0, z: -382.21497, w: -170.73186}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
