@@ -7,12 +7,18 @@ public class GunController : MonoBehaviour
     public float shootRange = 20f;
     public LayerMask starLayer;
     public AudioClip shootSound;
-    public AudioClip equipMusic;
+    [Range(0f, 1f)] public float shootVolume = 1f;
+    public AudioClip equipMusic;      // one?shot epic sound on pickup
     public AudioClip unequipSound;
+
+    [Header("Looping Music")]
+    public AudioClip equipLoopMusic;  // drag your looping track here
+    [Range(0f, 1f)] public float loopVolume = 0.5f;
 
     private ToyGun currentGun;
     private bool isGunEquipped = false;
-    private AudioSource audioSource;
+    private AudioSource audioSource;   // for one?shot sounds
+    private AudioSource loopSource;    // for looping music
 
     void Start()
     {
@@ -28,6 +34,12 @@ public class GunController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
+
+        // Create a separate AudioSource for the looping music
+        loopSource = gameObject.AddComponent<AudioSource>();
+        loopSource.loop = true;
+        loopSource.volume = loopVolume;
+        loopSource.playOnAwake = false;
     }
 
     public void EquipGun(ToyGun gun)
@@ -35,13 +47,20 @@ public class GunController : MonoBehaviour
         if (isGunEquipped) return;
 
         currentGun = gun;
-        // Parent the gun to the hold point and reset local transform
         currentGun.transform.SetParent(gunHoldPoint);
         currentGun.transform.localPosition = Vector3.zero;
         currentGun.transform.localRotation = Quaternion.identity;
 
+        // Play one?shot equip sound
         if (equipMusic != null)
             audioSource.PlayOneShot(equipMusic);
+
+        // Start looping music
+        if (equipLoopMusic != null)
+        {
+            loopSource.clip = equipLoopMusic;
+            loopSource.Play();
+        }
 
         isGunEquipped = true;
         Debug.Log("Gun equipped!");
@@ -50,6 +69,10 @@ public class GunController : MonoBehaviour
     public void UnequipGun()
     {
         if (!isGunEquipped) return;
+
+        // Stop looping music
+        if (loopSource.isPlaying)
+            loopSource.Stop();
 
         if (currentGun != null)
             currentGun.ReturnToOriginalPosition();
@@ -73,7 +96,7 @@ public class GunController : MonoBehaviour
     void Shoot()
     {
         if (shootSound != null)
-            AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position, shootVolume);
 
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, out RaycastHit hit, shootRange, starLayer))
