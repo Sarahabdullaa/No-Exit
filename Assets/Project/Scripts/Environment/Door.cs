@@ -21,6 +21,10 @@ namespace DoorScript
         public AudioSource asource;
         public AudioClip openDoor, closeDoor;
 
+        [Header("Locking")]
+        public string requiredPuzzle;   // "clock", "lamp", "star" or empty for no requirement
+        public AudioClip lockedSound;
+
         void Start()
         {
             asource = GetComponent<AudioSource>();
@@ -49,6 +53,24 @@ namespace DoorScript
 
         public void Interact()
         {
+
+            // Check if door is locked
+            if (!string.IsNullOrEmpty(requiredPuzzle))
+            {
+                bool unlocked = false;
+                switch (requiredPuzzle.ToLower())
+                {
+                    case "clock": unlocked = PuzzleProgress.ClockCompleted; break;
+                    case "lamp": unlocked = PuzzleProgress.LampCompleted; break;
+                    case "star": unlocked = PuzzleProgress.StarCompleted; break;
+                }
+                if (!unlocked)
+                {
+                    if (lockedSound != null) asource.PlayOneShot(lockedSound);
+                    Debug.Log($"Door to room {requiredPuzzle} is locked!");
+                    return;
+                }
+            }
             OpenDoor();
         }
 
