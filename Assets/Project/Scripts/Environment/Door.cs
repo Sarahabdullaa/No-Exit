@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace DoorScript
 {
     [RequireComponent(typeof(AudioSource))]
@@ -14,6 +15,7 @@ namespace DoorScript
         public GameObject endingCanvas;
         public MonoBehaviour playerController;
         public MonoBehaviour mouseLook;
+        public GameObject gameplayHUD;
 
         //Allows the door to stay where you put it at the start
         private float currentTargetAngle;
@@ -24,6 +26,10 @@ namespace DoorScript
         [Header("Locking")]
         public string requiredPuzzle;   // "clock", "lamp", "star" or empty for no requirement
         public AudioClip lockedSound;
+
+        [Header("Cutscene")]
+        public GameObject cutscenePrefab;
+        public bool loadCutscene;
 
         void Start()
         {
@@ -53,25 +59,67 @@ namespace DoorScript
 
         public void Interact()
         {
-
             // Check if door is locked
             if (!string.IsNullOrEmpty(requiredPuzzle))
             {
                 bool unlocked = false;
+
                 switch (requiredPuzzle.ToLower())
                 {
-                    case "clock": unlocked = PuzzleProgress.ClockCompleted; break;
-                    case "lamp": unlocked = PuzzleProgress.LampCompleted; break;
-                    case "star": unlocked = PuzzleProgress.StarCompleted; break;
-                    case "mold": unlocked = PuzzleProgress.MoldCompleted; break;
+                    case "clock":
+                        unlocked = PuzzleProgress.ClockCompleted;
+                        break;
+
+                    case "lamp":
+                        unlocked = PuzzleProgress.LampCompleted;
+                        break;
+
+                    case "star":
+                        unlocked = PuzzleProgress.StarCompleted;
+                        break;
+
+                    case "mold":
+                        unlocked = PuzzleProgress.MoldCompleted;
+                        break;
                 }
+
+                // STOP if puzzle not solved
                 if (!unlocked)
                 {
-                    if (lockedSound != null) asource.PlayOneShot(lockedSound);
+                    if (lockedSound != null)
+                        asource.PlayOneShot(lockedSound);
+
                     Debug.Log($"Door to room {requiredPuzzle} is locked!");
                     return;
                 }
             }
+
+            // ONLY after unlock
+            if (loadCutscene)
+            {
+                OpenDoor();
+
+                if (cutscenePrefab != null)
+                {
+                    cutscenePrefab.SetActive(true);
+
+                    if (playerController != null)
+                        playerController.enabled = false;
+
+                    if (mouseLook != null)
+                        mouseLook.enabled = false;
+
+                    if (gameplayHUD != null)
+                        gameplayHUD.SetActive(false);
+
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+
+                return;
+            }
+
+            // Normal door behavior
             OpenDoor();
         }
 
