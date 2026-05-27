@@ -25,6 +25,8 @@ public class MoldPuzzleManager : MonoBehaviour
         {
             completed = true;
             PuzzleProgress.MoldCompleted = true;
+            PlayerPrefs.SetInt("MoldCompleted", 1);
+            PlayerPrefs.Save();
             Debug.Log("Mold puzzle complete – door unlocked!");
             // Door will now respond to requiredPuzzle = "mold"
         }
