@@ -63,6 +63,7 @@ namespace DoorScript
                     case "clock": unlocked = PuzzleProgress.ClockCompleted; break;
                     case "lamp": unlocked = PuzzleProgress.LampCompleted; break;
                     case "star": unlocked = PuzzleProgress.StarCompleted; break;
+                    case "mold": unlocked = PuzzleProgress.MoldCompleted; break;
                 }
                 if (!unlocked)
                 {

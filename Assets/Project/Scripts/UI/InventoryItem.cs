@@ -37,6 +37,8 @@ public class InventoryItem : MonoBehaviour
 
     public void PickupItem()
     {
+
+        PlayerInventory.AddPiece(itemTitle);
         // SHOW HUD ICON
         if (hudIcon != null)
             hudIcon.SetActive(true);
